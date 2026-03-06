@@ -48,4 +48,4 @@ Fix date parsing bug in history view
 - Commit early and often; keep commits focused and atomic.
 - Do not commit secrets, credentials, or environment files.
 - Keep `main` stable and deployable at all times.
-- Delete branches after they are merged.
+- Delete branches after they are merged into `main`. There is no data loss: all commits are preserved in the history of `main`.
