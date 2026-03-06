@@ -23,3 +23,9 @@ No test framework is configured yet.
 ## Documentation
 
 IMPORTANT: Before generating any code, always consult the relevant documentation files in the `docs/` directory first. Use these docs as the primary reference for implementation patterns, conventions, and decisions specific to this project.
+
+## Commit Messages
+
+Follow `docs/version-control.md` for all commit message standards.
+
+**IMPORTANT:** Never append `Co-Authored-By` trailers or any AI/tool attribution to commit messages.
