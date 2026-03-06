@@ -3,13 +3,13 @@
 ## Branching
 
 - Always create a new branch when starting a new feature or fix.
-- New branches start from `main` unless the work logically depends on another in-progress branch, or unless specified otherwise.
+- New branches start from `master` unless the work logically depends on another in-progress branch, or unless specified otherwise.
 - Use descriptive branch names in kebab-case (e.g., `feature/user-auth`, `fix/login-redirect`).
 
 ## Integrating Changes
 
 - Always use **rebase** instead of merge when integrating changes from another branch.
-- To update a feature branch with the latest `main`: `git rebase main`
+- To update a feature branch with the latest `master`: `git rebase master`
 - To integrate a completed feature: rebase onto the target branch before merging (fast-forward preferred).
 - Never use `git merge` to pull in upstream changes into a feature branch.
 
@@ -47,5 +47,5 @@ Fix date parsing bug in history view
 
 - Commit early and often; keep commits focused and atomic.
 - Do not commit secrets, credentials, or environment files.
-- Keep `main` stable and deployable at all times.
-- Delete branches after they are merged into `main`. There is no data loss: all commits are preserved in the history of `main`.
+- Keep `master` stable and deployable at all times.
+- Delete branches after they are merged into `master`. There is no data loss: all commits are preserved in the history of `master`.
