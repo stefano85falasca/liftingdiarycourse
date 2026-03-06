@@ -83,6 +83,27 @@ Install Zod if not already present:
 npm install zod
 ```
 
+### No Redirects in Server Actions
+
+NEVER call `redirect()` from a server action. Redirects must be handled client-side based on the action's return value.
+
+- Server actions MUST return a typed result (success or error)
+- The calling client component is responsible for navigating based on the result (e.g. using `useRouter`)
+
+```ts
+// WRONG
+export async function createWorkoutAction(params: { name: string }) {
+  const workout = await createWorkout(userId, params.name);
+  redirect("/dashboard"); // ❌ never redirect from a server action
+}
+
+// CORRECT — return a result; let the client redirect
+export async function createWorkoutAction(params: { name: string }) {
+  const workout = await createWorkout(userId, params.name);
+  return { workout }; // ✅ client decides what to do next
+}
+```
+
 Full example of a correctly structured server action:
 
 ```ts
@@ -91,7 +112,6 @@ Full example of a correctly structured server action:
 
 import { z } from "zod";
 import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 import { createWorkout } from "@/src/data/workouts";
 
 const CreateWorkoutSchema = z.object({
@@ -100,7 +120,7 @@ const CreateWorkoutSchema = z.object({
 
 export async function createWorkoutAction(params: { name: string }) {
   const { userId } = await auth();
-  if (!userId) redirect("/sign-in");
+  if (!userId) return { error: "Unauthenticated" };
 
   const parsed = CreateWorkoutSchema.safeParse(params);
   if (!parsed.success) {
@@ -129,7 +149,7 @@ export async function deleteWorkoutAction(params: { userId: string; workoutId: n
 // CORRECT — userId comes from the server-side session
 export async function deleteWorkoutAction(params: { workoutId: number }) {
   const { userId } = await auth();
-  if (!userId) redirect("/sign-in");
+  if (!userId) return { error: "Unauthenticated" };
 
   const parsed = z.object({ workoutId: z.number().int().positive() }).safeParse(params);
   if (!parsed.success) return { error: "Invalid input" };
@@ -148,3 +168,4 @@ export async function deleteWorkoutAction(params: { workoutId: number }) {
 | Action params | Explicitly typed — never `FormData` |
 | Validation | Zod schema checked at the top of every server action |
 | User scoping | `userId` from Clerk session only, never from client input |
+| Redirects | Never from server actions — return a result and redirect client-side |
