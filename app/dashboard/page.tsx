@@ -1,6 +1,9 @@
+import { redirect } from 'next/navigation';
+import { auth } from '@clerk/nextjs/server';
 import { format } from 'date-fns';
 import { Card, CardContent } from '@/components/ui/card';
 import DatePicker from './DatePicker';
+import { getWorkoutsForUserByDate } from '@/src/data/workouts';
 
 interface DashboardPageProps {
   searchParams: Promise<{ date?: string }>;
@@ -10,21 +13,15 @@ function todayString() {
   return new Date().toISOString().split('T')[0];
 }
 
-// Placeholder workout type — replace with real type once schema is wired up
-interface Workout {
-  id: string;
-  name: string | null;
-  startedAt: Date | null;
-}
-
-const PLACEHOLDER_WORKOUTS: Workout[] = [];
-
 export default async function DashboardPage({ searchParams }: DashboardPageProps) {
+  const { userId } = await auth();
+  if (!userId) redirect('/sign-in');
+
   const { date } = await searchParams;
   const selectedDate = date ?? todayString();
   const displayDate = format(new Date(`${selectedDate}T00:00:00`), 'do MMM yyyy');
 
-  const workouts: Workout[] = PLACEHOLDER_WORKOUTS;
+  const workouts = await getWorkoutsForUserByDate(userId, selectedDate);
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 px-4 py-10">
