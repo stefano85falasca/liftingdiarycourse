@@ -22,7 +22,7 @@ No test framework is configured yet.
 
 ## Documentation
 
-IMPORTANT: Before generating any code, always consult the relevant documentation files in the `docs/` directory first. Use these docs as the primary reference for implementation patterns, conventions, and decisions specific to this project.
+IMPORTANT: Before generating any code or making any other change, always consult the relevant documentation files in the `docs/` directory first. Use these docs as the primary reference for implementation patterns, conventions, and decisions specific to this project.
 
 ## Commit Messages
 
