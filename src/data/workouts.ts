@@ -18,10 +18,14 @@ export async function getWorkoutById(userId: string, workoutId: number) {
   return workout ?? null;
 }
 
-export async function updateWorkout(userId: string, workoutId: number, name: string) {
+export async function updateWorkout(
+  userId: string,
+  workoutId: number,
+  data: { name: string; startedAt?: Date | null; finishedAt?: Date | null }
+) {
   const [workout] = await db
     .update(workouts)
-    .set({ name })
+    .set({ name: data.name, startedAt: data.startedAt, finishedAt: data.finishedAt })
     .where(and(eq(workouts.id, workoutId), eq(workouts.clerkUserId, userId)))
     .returning();
   return workout;
