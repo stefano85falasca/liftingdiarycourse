@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import { format } from 'date-fns';
@@ -47,19 +48,21 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
           <ul className="space-y-3">
             {workouts.map((workout) => (
               <li key={workout.id}>
-                <Card>
-                  <CardContent className="px-5 py-4">
-                    <p className="font-medium text-zinc-900 dark:text-zinc-50">
-                      {workout.name ?? 'Untitled Workout'}
-                    </p>
-                    {workout.startedAt && (
-                      <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-                        Started at{' '}
-                        {format(workout.startedAt, 'HH:mm')}
+                <Link href={`/dashboard/workout/${workout.id}`}>
+                  <Card className="hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors">
+                    <CardContent className="px-5 py-4">
+                      <p className="font-medium text-zinc-900 dark:text-zinc-50">
+                        {workout.name ?? 'Untitled Workout'}
                       </p>
-                    )}
-                  </CardContent>
-                </Card>
+                      {workout.startedAt && (
+                        <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                          Started at{' '}
+                          {format(workout.startedAt, 'HH:mm')}
+                        </p>
+                      )}
+                    </CardContent>
+                  </Card>
+                </Link>
               </li>
             ))}
           </ul>

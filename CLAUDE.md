@@ -24,6 +24,14 @@ No test framework is configured yet.
 
 IMPORTANT: Before generating any code or making any other change, always consult the relevant documentation files in the `docs/` directory first. Use these docs as the primary reference for implementation patterns, conventions, and decisions specific to this project.
 
+- `docs/auth.md` — Authentication patterns, middleware setup with Clerk, and auth checks in server components and actions
+- `docs/data-fetching.md` — Data fetching patterns and conventions
+- `docs/data-mutations.md` — Data mutation patterns and server action conventions
+- `docs/routing.md` — Route structure, route protection, dynamic routes, and guidelines for adding new routes
+- `docs/server-components.md` — Server component patterns and best practices
+- `docs/ui.md` — UI component patterns and styling conventions
+- `docs/version-control.md` — Git workflow, commit message standards, and branching conventions
+
 ## Commit Messages
 
 Follow `docs/version-control.md` for all commit message standards.
