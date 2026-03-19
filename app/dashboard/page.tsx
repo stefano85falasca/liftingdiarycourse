@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import { format } from 'date-fns';
 import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import DatePicker from './DatePicker';
 import { getWorkoutsForUserByDate } from '@/src/data/workouts';
 
@@ -36,9 +37,14 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
           <DatePicker selectedDate={selectedDate} />
         </div>
 
-        <h2 className="mb-4 text-lg font-medium text-zinc-800 dark:text-zinc-200">
-          Workouts on {displayDate}
-        </h2>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-lg font-medium text-zinc-800 dark:text-zinc-200">
+            Workouts on {displayDate}
+          </h2>
+          <Button asChild>
+            <Link href="/dashboard/workout/new">Log new workout</Link>
+          </Button>
+        </div>
 
         {workouts.length === 0 ? (
           <p className="text-sm text-zinc-500 dark:text-zinc-400">
