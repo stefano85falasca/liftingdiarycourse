@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { format } from "date-fns";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,15 +12,24 @@ import { updateWorkoutAction } from "./actions";
 interface Workout {
   id: number;
   name: string | null;
+  startedAt: Date | null;
+  finishedAt: Date | null;
 }
 
 interface Props {
   workout: Workout;
 }
 
+function toDatetimeLocalValue(date: Date | null): string {
+  if (!date) return "";
+  return format(date, "yyyy-MM-dd'T'HH:mm");
+}
+
 export default function EditWorkoutForm({ workout }: Props) {
   const router = useRouter();
   const [name, setName] = useState(workout.name ?? "");
+  const [startedAt, setStartedAt] = useState(toDatetimeLocalValue(workout.startedAt));
+  const [finishedAt, setFinishedAt] = useState(toDatetimeLocalValue(workout.finishedAt));
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
@@ -28,7 +38,12 @@ export default function EditWorkoutForm({ workout }: Props) {
     setPending(true);
     setError(null);
 
-    const result = await updateWorkoutAction({ workoutId: workout.id, name });
+    const result = await updateWorkoutAction({
+      workoutId: workout.id,
+      name,
+      startedAt: startedAt || null,
+      finishedAt: finishedAt || null,
+    });
     if (result?.error) {
       setError(
         typeof result.error === "string"
@@ -57,6 +72,26 @@ export default function EditWorkoutForm({ workout }: Props) {
             {error && (
               <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
             )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="startedAt">Start Time</Label>
+            <Input
+              id="startedAt"
+              type="datetime-local"
+              value={startedAt}
+              onChange={(e) => setStartedAt(e.target.value)}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="finishedAt">Finish Time</Label>
+            <Input
+              id="finishedAt"
+              type="datetime-local"
+              value={finishedAt}
+              onChange={(e) => setFinishedAt(e.target.value)}
+            />
           </div>
 
           <div className="flex gap-3 pt-2">
